@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,700;1,400;1,700&family=Roboto&display=swap");
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  width: 90%;
+  margin: 1rem auto;
+}
+
+form {
+  width: 90%;
+  margin: auto;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+form label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+form input,
+form select {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 4px;
+  border: none;
+}
+
+form button {
+  margin-top: 2em;
+  border-radius: 4px;
+  border: none;
+  padding: 1rem;
+  width: 100%;
+}
+
+footer {
+  width: 90%;
+  margin: 1rem auto;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Nunito', sans-serif;
+}
+
+header h1 {
+  text-align: center;
+}
+
+form button {
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+}
+
+.trivia-container .question-div h1 {
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .trivia-container .question-div h1 {
+    font-size: 1.75em;
+  }
+}
+
+.trivia-container .answer {
+  text-align: center;
+}
+
+.btn-container .btn {
+  text-align: center;
+}
+
+.goodbye-div p {
+  text-align: center;
+}
+
+.goodbye-div .play-again {
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+body {
+  background-color: #024469;
+  color: white;
+}
+
+form {
+  background-color: #025482;
+}
+
+form button {
+  background-color: #FFCE00;
+}
+
+form button:hover {
+  background-color: #e6b900;
+}
+
+a {
+  color: white;
+}
+/*# sourceMappingURL=styles.css.map */

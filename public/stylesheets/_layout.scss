@@ -1,0 +1,45 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    width: 90%;
+    margin: 1rem auto;
+}
+
+form {
+    width: 90%;
+    margin: auto;
+    padding: 1rem;
+    border-radius: 4px;
+    label {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 0.25rem;
+        margin-top: 0.5rem;
+    }
+    input,
+    select {
+        display: block;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 4px;
+        border: none;
+    }
+    button {
+        margin-top: 2em;
+        border-radius: 4px;
+        border: none;
+        padding: 1rem;
+        width: 100%; //makes button full width of form
+    }
+}
+
+footer {
+    width: 90%;
+    margin: 1rem auto;
+}

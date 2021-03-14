@@ -1,0 +1,55 @@
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,700;1,400;1,700&family=Roboto&display=swap');
+  body {
+      font-family: 'Roboto', sans-serif;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+      font-family: 'Nunito', sans-serif;
+  }
+  
+  header {
+      h1 {
+          text-align: center;
+      }
+  }
+  
+  form {
+      button {
+          font-family: 'Nunito', sans-serif;
+          font-weight: bold;
+      }
+  }
+  
+  .trivia-container {
+      .question-div h1 {
+          text-align: center;
+          @media only screen and (max-width: 600px) {
+              font-size: 1.75em; //makes question font a little smaller on mobile views
+          }
+      }
+      .answer {
+          text-align: center;
+      }
+  }
+  
+  .btn-container {
+      .btn {
+          text-align: center;
+      }
+  }
+  
+  .goodbye-div {
+      p {
+          text-align: center;
+      }
+      .play-again {
+          text-align: center;
+          font-weight: bold;
+          letter-spacing: 2px;
+      }
+  }

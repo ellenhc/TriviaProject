@@ -1,0 +1,24 @@
+$yellow: #FFCE00;
+$blue: #025482;
+$darkblue: #024469;
+$green: #007849;
+$red: #C30916;
+$gray: #efefef;
+body {
+    background-color: $darkblue;
+    color: white;
+}
+
+form {
+    background-color: $blue;
+    button {
+        background-color: $yellow;
+    }
+    button:hover {
+        background-color: darken($yellow, 5%);
+    }
+}
+
+a {
+    color: white;
+}
