@@ -8,7 +8,8 @@ const PORT = process.env.PORT || 5000
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-app.get('/getQuestion', handleQuestions);
+app.get('/api/getQuestions', handleQuestions);
+app.get('/api/getOneQuestion', getOneQuestion);
 app.get('/', (req, res) => res.render('pages/index'))
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
@@ -21,11 +22,9 @@ function handleQuestions(req, res) {
     let difficulty = req.query.difficulty;
     const url = startURL + `amount=${amount}` + ((category != 'any') ? `&category=${category}` : '') + ((difficulty != 'any') ? `&difficulty=${difficulty}` : '') + `&type=multiple`;
     getQuestions(url, data => {
-        storeQuestions(data['results']);
-        //process.stdout.write(data)
-        res.render('pages/trivia', {
-            //'question': questions
-        });
+        storeQuestions(data.results);
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(questionList));
     });
 }
 
@@ -36,9 +35,8 @@ function getQuestions(url, callback) {
         method: 'GET'
     }
     const req = https.request(options, res => {
-        console.log(`statusCode: ${res.statusCode}`)
         res.on('data', d => {
-            callback(d);
+            callback(JSON.parse(d));
         })
     })
 
@@ -47,8 +45,8 @@ function getQuestions(url, callback) {
     })
 
     req.end()
-
 }
+
 
 function storeQuestions(questions) {
     for (let i = 0; i < questions.length; i++) {
@@ -57,6 +55,8 @@ function storeQuestions(questions) {
     }
 }
 
-function getQuestionList() {
-    return questionList;
+function getOneQuestion(req, res) {
+    let question = questionList.pop();
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(question));
 }
