@@ -21,6 +21,7 @@ function handleQuestions(req, res) {
     let category = req.query.category;
     let difficulty = req.query.difficulty;
     const url = startURL + `amount=${amount}` + ((category != 'any') ? `&category=${category}` : '') + ((difficulty != 'any') ? `&difficulty=${difficulty}` : '') + `&type=multiple`;
+    console.log(url);
     getQuestions(url, data => {
         storeQuestions(data.results);
         res.setHeader('Content-Type', 'application/json');
