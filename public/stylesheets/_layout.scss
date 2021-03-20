@@ -43,3 +43,82 @@ footer {
     width: 90%;
     margin: 1rem auto;
 }
+
+
+/*Styling the trivia question page below*/
+
+body {
+    width: 90%;
+    margin: auto;
+}
+
+.stats-box {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: auto auto;
+    .outer {
+        border-radius: 4px;
+    }
+    #timer {
+        width: 0%;
+        height: 24px;
+        border-radius: 4px;
+    }
+}
+
+.trivia-container {
+    margin: 1rem auto;
+    padding: 1rem;
+    border-radius: 4px;
+    .question-div {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+    .answer-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1rem;
+        @media only screen and (max-width: 600px) {
+            grid-template-columns: 1fr;
+        }
+    }
+    .answer {
+        padding: 1rem;
+        border-radius: 4px;
+        width: 100%;
+    }
+}
+
+.btn-container {
+    margin-top: 2rem;
+    .btn {
+        border-radius: 4px;
+        padding: 1rem;
+        display: block;
+        grid-column: 2;
+    }
+    display: none;
+}
+
+.done .btn-container {
+    display: block;
+    @media only screen and (min-width: 600px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.goodbye-div {
+    .play-again {
+        border-radius: 4px;
+        padding: 1rem;
+        margin: 1rem;
+    }
+}
+
+.show-answer {
+    margin-top: 1rem;
+}

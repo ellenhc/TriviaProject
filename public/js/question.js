@@ -17,7 +17,7 @@ function getOneQuestion() {
 
     $.get('/api/getQuestions', params, function(data, status) {
         console.log(data);
-        questionList.concat(data);
+        questionList = data;
         renderOneQuestion();
     });
 
@@ -25,25 +25,116 @@ function getOneQuestion() {
 
 function renderOneQuestion() {
     /*step 1 - remove previous page content*/
-    //const node = document.querySelector("body");
     const $node = $(document.body);
     $node.empty();
-    //renderStats(node);
 
     /*step 2 - renders current question to page*/
     const currentQuestion = getCurrentQuestion();
-    const $container = document.createElement("div"); //creates a div to hold the question content
+    const $container = $(document.createElement("div")); //creates a div to hold the question content
     $container.addClass("trivia-container"); //adds a class to that div
 
-    const $questionDiv = document.createElement("div"); //adds a div to hold the question itself
+    const $questionDiv = $(document.createElement("div")); //adds a div to hold the question itself
     $questionDiv.addClass("question-div"); //adds a class to style the question
     $questionDiv.html(`<h1>${currentQuestion.question}</h1>`); //adds the question text as an h1
-    $node.append(container); //adds trivia-container to page
-    $container.append(questionDiv); //adds questionDiv to page
+    $node.append($container); //adds trivia-container to page
+    $container.append($questionDiv); //adds questionDiv to page
 
-    const $answerContainer = document.createElement("div"); //creates container to hold the answers
+    const $answerContainer = $(document.createElement("div")); //creates container to hold the answers
     $answerContainer.addClass("answer-container"); //adds a class to that container
 
-    const $correctAnswerDiv = document.createElement("div"); //creates a div to show the user the correct answer
+    const $correctAnswerDiv = $(document.createElement("div")); //creates a div to show the user the correct answer
     $correctAnswerDiv.addClass("show-answer");
+
+    let randomAnswer = [0, 1, 2, 3]; //has same length as number of possible answers
+    //Shuffles array to get a number in no particular order using the Fisher Yates method
+    for (i = randomAnswer.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * i)
+        k = randomAnswer[i]
+        randomAnswer[i] = randomAnswer[j]
+        randomAnswer[j] = k
+    }
+    randomAnswer.forEach((i) => {
+        if (i == 3) {
+            const $answer = $(document.createElement("div"));
+            $answer.html(`<p>${currentQuestion.correct_answer}</p>`);
+            $answer.addClass("answer");
+            $answerContainer.append($answer);
+
+            //add a click handler for CORRECT answer
+            $answer.click(() => {
+                if (!$container.hasClass("done")) {
+                    $container.addClass("done"); //adds class "done"
+
+                    $answer.css("background-color", "#007849"); //change background-color to green
+                    $answer.css("transition", "all 1.5s"); //adds gradual transition to green color
+                }
+            })
+        } else {
+            const $answer = $(document.createElement("div"));
+            $answer.html(`<p>${currentQuestion.incorrect_answers[i]}</p>`);
+            $answer.addClass("answer");
+            $answerContainer.append($answer);
+
+            //add a click handler for INCORRECT answers
+            $answer.click(() => {
+                if (!$container.hasClass("done")) {
+                    $container.addClass("done"); //adds class "done"
+
+                    $answer.css("background-color", "#C30916"); //change background-color to red
+                    $answer.css("transition", "all 1.5s"); //adds a gradual transition to red color
+                }
+            })
+        }
+    });
+
+    $container.append($answerContainer); //adds the answer container to page
+    renderButton(); //adds next button once an answer has been clicked
+    $container.append($correctAnswerDiv);
+}
+
+function renderButton() {
+    const $node = $(document.querySelector(".trivia-container"));
+
+    const $buttonContainer = $(document.createElement("div"));
+    $buttonContainer.addClass("btn-container");
+
+    const $nextButton = $(document.createElement("span"));
+    $nextButton.html(`Next &#9658`);
+    $nextButton.addClass("btn");
+    $buttonContainer.append($nextButton);
+    $nextButton.click(() => {
+        currentQuestionIndex++; //increments the currentQuestionIndex to go to next q when fxn is called
+        //renders the next question if the questions have not been exhausted
+        if (currentQuestionIndex != questionList.length) {
+            renderOneQuestion();
+            //presentTime = 0;
+        } else {
+            renderGoodbye();
+        }
+    })
+
+    $node.append($buttonContainer);
+}
+
+function renderGoodbye() {
+    /*step 1 - remove question/answer content*/
+    const $node = $(document.querySelector(".trivia-container"));
+    $node.empty();
+
+    /*step 2 - show message and play again button */
+    const $goodbyeContainer = $(document.createElement("div"));
+    $goodbyeContainer.addClass("goodbye-div");
+    $goodbyeContainer.html(`<p>Thanks for playing!</p>`);
+
+    const $playAgain = $(document.createElement("div"));
+    $playAgain.addClass("play-again");
+    $playAgain.html(`Play Again?`);
+    $goodbyeContainer.append($playAgain);
+
+    $node.append($goodbyeContainer);
+
+    /*step 3 - reload page to go back to the original form when play again is clicked*/
+    $playAgain.click(() => {
+        location.reload();
+    })
 }
