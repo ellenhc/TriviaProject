@@ -24,11 +24,11 @@ function getOneQuestion() {
 }
 
 function renderOneQuestion() {
-    /*step 1 - remove previous page content*/
+    /*removes previous page content*/
     const $node = $(document.body);
     $node.empty();
 
-    /*step 2 - renders current question to page*/
+    /*renders current question to page*/
     const currentQuestion = getCurrentQuestion();
     const $container = $(document.createElement("div")); //creates a div to hold the question content
     $container.addClass("trivia-container"); //adds a class to that div
@@ -107,7 +107,6 @@ function renderButton() {
         //renders the next question if the questions have not been exhausted
         if (currentQuestionIndex != questionList.length) {
             renderOneQuestion();
-            //presentTime = 0;
         } else {
             renderGoodbye();
         }
@@ -117,11 +116,11 @@ function renderButton() {
 }
 
 function renderGoodbye() {
-    /*step 1 - remove question/answer content*/
+    /*removes question/answer content*/
     const $node = $(document.querySelector(".trivia-container"));
     $node.empty();
 
-    /*step 2 - show message and play again button */
+    /*shows message and play again button */
     const $goodbyeContainer = $(document.createElement("div"));
     $goodbyeContainer.addClass("goodbye-div");
     $goodbyeContainer.html(`<p>Thanks for playing!</p>`);
@@ -133,7 +132,7 @@ function renderGoodbye() {
 
     $node.append($goodbyeContainer);
 
-    /*step 3 - reload page to go back to the original form when play again is clicked*/
+    /*reloads page to go back to the original form when play again is clicked*/
     $playAgain.click(() => {
         location.reload();
     })
