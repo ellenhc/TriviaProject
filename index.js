@@ -5,10 +5,12 @@ const https = require('https')
 const app = express();
 const PORT = process.env.PORT || 5000
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-app.get('/api/getQuestions', handleQuestions);
+app.post('/api/getQuestions', handleQuestions);
 app.get('/api/getOneQuestion', getOneQuestion);
 app.get('/', (req, res) => res.render('pages/index'))
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
@@ -17,11 +19,11 @@ let questionList = [];
 
 function handleQuestions(req, res) {
     const startURL = "https://opentdb.com/api.php?";
-    let amount = req.query.amount;
-    let category = req.query.category;
-    let difficulty = req.query.difficulty;
+    console.log(req.body);
+    let amount = req.body.amount;
+    let category = req.body.category;
+    let difficulty = req.body.difficulty;
     const url = startURL + `amount=${amount}` + ((category != 'any') ? `&category=${category}` : '') + ((difficulty != 'any') ? `&difficulty=${difficulty}` : '') + `&type=multiple`;
-    console.log(url);
     getQuestions(url, data => {
         storeQuestions(data.results);
         res.setHeader('Content-Type', 'application/json');

@@ -12,10 +12,10 @@ function getOneQuestion() {
     let difficulty = $('#difficulty').val();
     let type = 'multiple';
 
-    let params = { amount: numQuestions, type: type, category: category, difficulty: difficulty };
+    let params = { amount: numQuestions, category: category, difficulty: difficulty, type: type, };
     //console.log(params);
 
-    $.get('/api/getQuestions', params, function(data, status) {
+    $.post('/api/getQuestions', params, function(data, status) {
         console.log(data);
         questionList = data;
         renderOneQuestion();
