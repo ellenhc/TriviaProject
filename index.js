@@ -19,7 +19,7 @@ let questionList = [];
 
 function handleQuestions(req, res) {
     const startURL = "https://opentdb.com/api.php?";
-    console.log(req.body);
+    //console.log(req.body);
     let amount = req.body.amount;
     let category = req.body.category;
     let difficulty = req.body.difficulty;

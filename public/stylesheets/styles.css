@@ -195,45 +195,33 @@ form button {
 }
 
 body {
-  background-color: #024469;
-  color: white;
+  background-color: #efefef;
 }
 
 form {
-  background-color: #025482;
+  background-color: #d6d6d6;
 }
 
 form button {
-  background-color: #FFCE00;
+  background-color: #025482;
+  color: white;
 }
 
 form button:hover {
-  background-color: #e6b900;
+  background-color: #024469;
 }
 
 a {
   color: white;
 }
 
-.stats-box {
-  background-color: #025482;
-}
-
-.stats-box .outer {
-  background-color: #efefef;
-}
-
-.stats-box #timer {
-  background-color: #007849;
-}
-
 .trivia-container {
-  background-color: #025482;
+  background-color: #d6d6d6;
 }
 
 .trivia-container .answer {
-  background-color: #FFCE00;
-  color: black;
+  background-color: #025482;
+  color: white;
 }
 
 @media only screen and (min-width: 600px) {
@@ -241,7 +229,7 @@ a {
     cursor: pointer;
   }
   .trivia-container:not(.done) .answer:hover, .trivia-container:not(.done) .answer:focus {
-    background-color: #f2c400;
+    background-color: #024c75;
     -webkit-box-shadow: 0 5px 11px 0 rgba(1, 34, 52, 0.26), 0 4px 15px 0 rgba(1, 34, 52, 0.26);
             box-shadow: 0 5px 11px 0 rgba(1, 34, 52, 0.26), 0 4px 15px 0 rgba(1, 34, 52, 0.26);
   }
@@ -257,11 +245,12 @@ a {
 }
 
 .goodbye-div .play-again {
-  background-color: #FFCE00;
+  background-color: #025482;
+  color: white;
 }
 
 .goodbye-div .play-again:hover, .goodbye-div .play-again:focus {
-  background-color: #f2c400;
+  background-color: #024c75;
   -webkit-box-shadow: 0 5px 11px 0 rgba(1, 34, 52, 0.26), 0 4px 15px 0 rgba(1, 34, 52, 0.26);
           box-shadow: 0 5px 11px 0 rgba(1, 34, 52, 0.26), 0 4px 15px 0 rgba(1, 34, 52, 0.26);
 }
