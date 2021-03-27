@@ -2,16 +2,22 @@ const express = require('express')
 const path = require('path')
 const fs = require('fs')
 const https = require('https')
-const app = express();
+require('dotenv').config();
+
+const usersController = require("./controllers/usersController.js");
+
 const PORT = process.env.PORT || 5000
 
+const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')))
+
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 app.post('/api/getQuestions', handleQuestions);
-app.get('/api/getOneQuestion', getOneQuestion);
+app.get("/search", usersController.search);
 app.get('/', (req, res) => res.render('pages/index'))
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
@@ -56,10 +62,4 @@ function storeQuestions(questions) {
         let question = { question: questions[i].question, correct_answer: questions[i].correct_answer, incorrect_answers: questions[i].incorrect_answers }; //just saves the question, the correct answer, and the incorrect answers and not the other data
         questionList.push(question); //adds it to the questionList array
     }
-}
-
-function getOneQuestion(req, res) {
-    let question = questionList.pop();
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(question));
 }
