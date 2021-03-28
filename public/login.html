@@ -5,20 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="/js/question.js"></script>
+    <script src="js/login.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
 </head>
 
 <body>
     <main>
-        <h1>Create an account</h1>
-        <div>
-            <label for="userName">First name</label>
-            <input type="text" id="userName" name="userName" required>
+        <h1>Login</h1>
+        <form action="auth" method="POST">
+            <label for="userName">Username</label>
+            <input type="text" id="userName" name="userName" placeholder="Username" required>
             <label for="userPassword">Password</label>
-            <input type="password" id="userPassword" name="userPassword" required><br>
-            <button type="submit" onclick="createUser()">Create Account</button>
-        </div>
+            <input type="password" id="userPassword" name="userPassword" placeholder="Password" required><br>
+            <input type="submit" value="Login">
+        </form>
         <!--<input type="text" id="userName" placeholder="username">
         <button type="submit" onclick="getUser()">Search by username</button>-->
         <h2>Results</h2>
