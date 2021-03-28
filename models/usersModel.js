@@ -1,9 +1,16 @@
 const { Pool } = require("pg");
 
-const db_url = process.env.DATABASE_URL;
+const connectionString = process.env.DATABASE_URL;
 
-console.log("DB URL: " + db_url);
-const pool = new Pool({ connectionString: db_url });
+//console.log("DB URL: " + db_url);
+//const pool = new Pool({ connectionString: db_url });
+const pool = new Pool({
+    connectionString: connectionString,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+pool.connect();
 
 function getUser(userName, callback) {
     let sql = 'SELECT * FROM users WHERE "userName" = $1::text';
