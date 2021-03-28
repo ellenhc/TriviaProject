@@ -1,11 +1,11 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-//const fs = require('fs');
-//const https = require('https');
 require('dotenv').config();
-const app = express();
+
 const PORT = process.env.PORT || 5000
+
+const app = express();
 
 app.use(session({
     secret: 'my-super-secret-secret!',
