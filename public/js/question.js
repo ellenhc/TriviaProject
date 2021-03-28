@@ -1,5 +1,6 @@
 let currentQuestionIndex = 0;
 let questionList = [];
+let score = 0;
 
 function getCurrentQuestion() {
     return questionList[currentQuestionIndex];
@@ -27,6 +28,7 @@ function renderOneQuestion() {
     /*removes previous page content*/
     const $node = $(document.body);
     $node.empty();
+    renderStats($node);
 
     /*renders current question to page*/
     const currentQuestion = getCurrentQuestion();
@@ -67,6 +69,10 @@ function renderOneQuestion() {
 
                     $answer.css("background-color", "#007849"); //change background-color to green
                     $answer.css("transition", "all 1.5s"); //adds gradual transition to green color
+
+                    score++; //increments the score
+                    const $scoreBox = $(document.querySelector(".score-box"));
+                    $scoreBox.html(renderScore());
                 }
             })
         } else {
@@ -116,6 +122,9 @@ function renderButton() {
 }
 
 function renderGoodbye() {
+    /*save score to games table*/
+
+
     /*removes question/answer content*/
     const $node = $(document.querySelector(".trivia-container"));
     $node.empty();
@@ -136,4 +145,19 @@ function renderGoodbye() {
     $playAgain.click(() => {
         location.reload();
     })
+}
+
+function renderStats($node) {
+    const $statsBox = $(document.createElement("div"));
+    $statsBox.addClass("stats-box");
+    $node.append($statsBox);
+
+    const $scoreBox = $(document.createElement("div"));
+    $scoreBox.addClass("score-box");
+    $scoreBox.html(renderScore());
+    $statsBox.append($scoreBox);
+}
+
+function renderScore() {
+    return `<p>Score</p><h3>${score} / ${questionList.length}</h3>`;
 }
