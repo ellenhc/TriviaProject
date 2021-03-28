@@ -5,7 +5,15 @@ const fs = require('fs');
 const https = require('https');
 require('dotenv').config();
 
-const { Connection } = require('pg');
+const { Pool } = require("pg");
+const connectionString = process.env.DATABASE_URL;
+const pool = new Pool({
+    connectionString: connectionString,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+pool.connect();
 
 const PORT = process.env.PORT || 5000
 
