@@ -1,23 +1,26 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const fs = require('fs');
-const https = require('https');
+//const fs = require('fs');
+//const https = require('https');
 require('dotenv').config();
+const app = express();
+const PORT = process.env.PORT || 5000
 
-const { Pool } = require("pg");
-const connectionString = process.env.DATABASE_URL;
+app.use(session({
+    secret: 'my-super-secret-secret!',
+    resave: false,
+    saveUninitialized: true
+}))
+
+
+const { Pool } = require('pg');
 const pool = new Pool({
-    connectionString: connectionString,
+    connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
     }
 });
-pool.connect();
-
-const PORT = process.env.PORT || 5000
-
-const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json());
@@ -32,15 +35,15 @@ app.use(session({
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 app.post('/api/getQuestions', handleQuestions);
-app.post("/auth", handleLogin);
-app.get('/home', function(request, response) {
+app.post("/login", handleLogin);
+/*app.get('/home', function(request, response) {
     if (request.session.loggedin) {
         response.send('Welcome back, ' + request.session.userName + '!');
     } else {
         response.send('Please login to view this page!');
     }
     response.end();
-});
+});*/
 app.get('/', (req, res) => res.render('pages/index'))
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
