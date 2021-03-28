@@ -36,14 +36,14 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 app.post('/api/getQuestions', handleQuestions);
 app.post("/login", handleLogin);
-/*app.get('/home', function(request, response) {
+app.get('/home', function(request, response) {
     if (request.session.loggedin) {
         response.send('Welcome back, ' + request.session.userName + '!');
     } else {
         response.send('Please login to view this page!');
     }
     response.end();
-});*/
+});
 app.get('/', (req, res) => res.render('pages/index'))
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
