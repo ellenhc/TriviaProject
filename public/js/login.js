@@ -8,12 +8,3 @@ function createUser() {
         }
     })
 }
-/*function getUser() {
-    let userName = $("#userName").val();
-    $.get("/search", { userName: userName }, function(data) {
-        for (var i = 0; i < data.list.length; i++) {
-            let user = data.list[i];
-            $("#ulScriptures").append("<li>" + user.userId + " " + user.userName + ":" + user.userPassword + "</li>");
-        }
-    })
-}*/

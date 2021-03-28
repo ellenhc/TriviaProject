@@ -123,7 +123,10 @@ function renderButton() {
 
 function renderGoodbye() {
     /*save score to games table*/
-
+    $.post("/api/save", { score: score }, function(data) {
+        console.log("Back from the server with:");
+        console.log(data);
+    })
 
     /*removes question/answer content*/
     const $node = $(document.querySelector(".trivia-container"));
@@ -159,5 +162,5 @@ function renderStats($node) {
 }
 
 function renderScore() {
-    return `<p>Score</p><h3>${score} / ${questionList.length}</h3>`;
+    return `<p id="score">Score</p><h3>${score} / ${questionList.length}</h3>`;
 }

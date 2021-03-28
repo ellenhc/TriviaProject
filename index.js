@@ -17,7 +17,7 @@ app.use(session({
 
 const { Pool } = require('pg');
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || "postgres://txptjhuavktlxo:165bb28b4d23e966373f85f671125777ebe0bf1157f579119c90e6b39bd881d7@ec2-3-211-37-117.compute-1.amazonaws.com:5432/dbheve9moh0581",
+    connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
     }
@@ -37,6 +37,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 app.post('/api/getQuestions', handleQuestions);
 app.post("/login", handleLogin);
+app.post("/api/save", storeGame);
 app.get('/home', function(request, response) {
     if (request.session.loggedin) {
         response.send('Welcome back, ' + request.session.userName + '!');
@@ -96,8 +97,8 @@ function handleLogin(req, res) {
     let userPassword = req.body.userPassword;
     if (userName && userPassword) {
         pool.query('SELECT * FROM users WHERE "userName" = $1::text AND "userPassword" = $2::text', [userName, userPassword], function(error, results, fields) {
-            console.log(error);
-            console.log(results);
+            //console.log(error);
+            //console.log(results);
             if (results.rows.length > 0) {
                 req.session.loggedin = true;
                 req.session.userName = userName;
@@ -109,6 +110,29 @@ function handleLogin(req, res) {
         });
     } else {
         res.send('Please enter Username and Password!');
+        res.end();
+    }
+}
+
+function storeGame(req, res) {
+    let score = req.body.score;
+    let nowDate = new Date();
+    var date = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
+    if (score && date) {
+        pool.query('INSERT INTO games ("userId", "score", "date") VALUES (1, $1, $2)', [score, date], function(error, results, fields) {
+            //console.log(error);
+            //console.log(results);
+            if (!error) {
+                //maybe save score in session?
+                console.log("Saved game to database");
+            } else {
+                res.status(500);
+                console.log('Could not save game to database');
+            }
+            res.end();
+        });
+    } else {
+        res.status(400);
         res.end();
     }
 }
