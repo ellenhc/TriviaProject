@@ -17,7 +17,7 @@ app.use(session({
 
 const { Pool } = require('pg');
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL || "postgres://txptjhuavktlxo:165bb28b4d23e966373f85f671125777ebe0bf1157f579119c90e6b39bd881d7@ec2-3-211-37-117.compute-1.amazonaws.com:5432/dbheve9moh0581",
     ssl: {
         rejectUnauthorized: false
     }
@@ -95,8 +95,10 @@ function handleLogin(req, res) {
     let userName = req.body.userName;
     let userPassword = req.body.userPassword;
     if (userName && userPassword) {
-        pool.query('SELECT * FROM users WHERE "userName" = ? AND "userPassword" = ?', [userName, userPassword], function(error, results, fields) {
-            if (results.length > 0) {
+        pool.query('SELECT * FROM users WHERE "userName" = $1::text AND "userPassword" = $2::text', [userName, userPassword], function(error, results, fields) {
+            console.log(error);
+            console.log(results);
+            if (results.rows.length > 0) {
                 req.session.loggedin = true;
                 req.session.userName = userName;
                 res.redirect('/home');
