@@ -12,9 +12,25 @@ const pool = new Pool({
 });
 pool.connect();
 
-function getUser(userName, callback) {
-    let sql = 'SELECT * FROM users WHERE "userName" = $1::text';
+/*function getUser(userName, callback) {
+    let sql = 'SELECT * FROM users WHERE "userName" = $::text';
     let params = [userName];
+    pool.query(sql, params, function(err, db_results) {
+        if (err) {
+            throw err;
+        } else {
+            let results = {
+                success: true,
+                list: db_results.rows
+            };
+            callback(null, results);
+        }
+    });
+}*/
+
+function createUser(userName, userPassword, callback) {
+    let sql = 'INSERT INTO users ("userName", "userPassword") VALUES ($:::userName, $::userPassword)';
+    let params = [userName, userPassword];
     pool.query(sql, params, function(err, db_results) {
         if (err) {
             throw err;
@@ -29,5 +45,5 @@ function getUser(userName, callback) {
 }
 
 module.exports = {
-    getUser: getUser
+    createUser: createUser
 };
