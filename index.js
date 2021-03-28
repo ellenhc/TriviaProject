@@ -1,11 +1,10 @@
-const express = require('express')
+const express = require('express');
 const session = require('express-session');
-const path = require('path')
-const fs = require('fs')
-const https = require('https')
+const path = require('path');
+const fs = require('fs');
+const https = require('https');
 require('dotenv').config();
 
-const usersController = require("./controllers/usersController.js");
 const { Connection } = require('pg');
 
 const PORT = process.env.PORT || 5000
@@ -86,16 +85,16 @@ function handleLogin(req, res) {
     if (username && password) {
         Connection.query('SELECT * FROM users WHERE "userName" = ? AND "userPassword" = ?', [userName, userPassword], function(error, results, fields) {
             if (results.length > 0) {
-                request.session.loggedin = true;
-                request.session.userName = userName;
-                response.redirect('/home');
+                req.session.loggedin = true;
+                req.session.userName = userName;
+                res.redirect('/home');
             } else {
                 res.send('Incorrect Username and/or Password!');
             }
             res.end();
         });
     } else {
-        response.send('Please enter Username and Password!');
-        response.end();
+        res.send('Please enter Username and Password!');
+        res.end();
     }
 }
