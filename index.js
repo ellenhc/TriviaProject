@@ -91,7 +91,7 @@ function handleLogin(req, res) {
     let userName = req.body.userName;
     let userPassword = req.body.userPassword;
     if (username && password) {
-        Connection.query('SELECT * FROM users WHERE "userName" = ? AND "userPassword" = ?', [userName, userPassword], function(error, results, fields) {
+        pool.query('SELECT * FROM users WHERE "userName" = ? AND "userPassword" = ?', [userName, userPassword], function(error, results, fields) {
             if (results.length > 0) {
                 req.session.loggedin = true;
                 req.session.userName = userName;
