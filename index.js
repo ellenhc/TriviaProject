@@ -95,35 +95,54 @@ function storeQuestions(questions) {
     }
 }
 
-function handleLogin(req, res) {
+async function handleLogin(req, res) {
     let userName = req.body.userName;
     let userPassword = req.body.userPassword;
     if (userName && userPassword) {
-        pool.query('SELECT * FROM users WHERE "userName" = $1::text AND "userPassword" = $2::text', [userName, userPassword], function(error, results, fields) {
-            //console.log(error);
-            //console.log(results);
-            if (results.rows.length > 0) {
-                req.session.loggedin = true;
-                req.session.userName = userName;
-                req.session.userId = results.rows[0]['userId'];
-                //console.log(results.rows[0]['userId']);
-                res.redirect('/');
-            } else {
-                res.send('Incorrect Username and/or Password.');
-            }
-            res.end();
-        });
+        let userData = await getUser(userName);
+        if (bcrypt.compareSync('userPassword', userData[0]['userPassword'])) {
+            pool.query('SELECT * FROM users WHERE "userName" = $1::text', [userName], function(error, results, fields) {
+                //console.log(error);
+                //console.log(results);
+                if (results.rows.length > 0) {
+                    req.session.loggedin = true;
+                    req.session.userName = userName;
+                    req.session.userId = results.rows[0]['userId'];
+                    res.redirect('/');
+                } else {
+                    res.send('Incorrect Username and/or Password.');
+                }
+                res.end();
+            });
+        } else {
+            console.log("Passwords don't match.");
+        }
     } else {
         res.send('Please enter Username and Password.');
         res.end();
     }
 }
 
+function getUser(userName) {
+    return new Promise(function(fulfilled, rejected) {
+        pool.query('SELECT * FROM users WHERE "userName"=$1', [userName], function(error, results, fields) {
+            if (results.rows.length > 0) {
+                //console.log(results.rows);
+                //return results.rows;
+                fulfilled(results.rows)
+            } else {
+                console.log("Couldn't get user data.");
+            }
+        });
+    })
+}
+
 function handleRegister(req, res) {
     let userName = req.body.userName;
     let userPassword = req.body.userPassword;
+    let hash = bcrypt.hashSync('userPassword', 10);
     if (userName && userPassword) {
-        pool.query('INSERT INTO users ("userName", "userPassword") VALUES ($1, $2)', [userName, userPassword], function(error, results, fields) {
+        pool.query('INSERT INTO users ("userName", "userPassword") VALUES ($1, $2)', [userName, hash], function(error, results, fields) {
             if (!error) {
                 console.log("Saved user to database");
                 res.redirect('/login.html');
