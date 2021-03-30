@@ -1,7 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const https = require('https')
+const https = require('https');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 5000
