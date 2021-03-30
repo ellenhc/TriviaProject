@@ -17,7 +17,7 @@ function getOneQuestion() {
     //console.log(params);
 
     $.post('/api/getQuestions', params, function(data, status) {
-        console.log(data);
+        //console.log(data);
         questionList = data;
         renderOneQuestion();
     });

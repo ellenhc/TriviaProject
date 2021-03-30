@@ -37,6 +37,8 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 app.post('/api/getQuestions', handleQuestions);
 app.post("/login", handleLogin);
+app.post("/register", handleRegister);
+app.post("/logout", handleLogout);
 app.post("/api/save", storeGame);
 app.get('/home', function(request, response) {
     if (request.session.loggedin) {
@@ -102,16 +104,43 @@ function handleLogin(req, res) {
             if (results.rows.length > 0) {
                 req.session.loggedin = true;
                 req.session.userName = userName;
-                res.redirect('/home');
+                req.session.userId = results.rows[0]['userId'];
+                //console.log(results.rows[0]['userId']);
+                res.redirect('/');
             } else {
-                res.send('Incorrect Username and/or Password!');
+                res.send('Incorrect Username and/or Password.');
             }
             res.end();
         });
     } else {
-        res.send('Please enter Username and Password!');
+        res.send('Please enter Username and Password.');
         res.end();
     }
+}
+
+function handleRegister(req, res) {
+    let userName = req.body.userName;
+    let userPassword = req.body.userPassword;
+    if (userName && userPassword) {
+        pool.query('INSERT INTO users ("userName", "userPassword") VALUES ($1, $2)', [userName, userPassword], function(error, results, fields) {
+            if (!error) {
+                console.log("Saved user to database");
+                res.redirect('/login.html');
+            } else {
+                res.status(500);
+                console.log("Could not save user to database");
+            }
+            res.end();
+        });
+    } else {
+        res.status(400);
+        res.end();
+    }
+}
+
+function handleLogout(req, res) {
+    //destroy session
+    req.session.loggedin = false;
 }
 
 function storeGame(req, res) {
@@ -119,7 +148,7 @@ function storeGame(req, res) {
     let nowDate = new Date();
     var date = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
     if (score && date) {
-        pool.query('INSERT INTO games ("userId", "score", "date") VALUES (1, $1, $2)', [score, date], function(error, results, fields) {
+        pool.query('INSERT INTO games ("userId", "score", "date") VALUES ($1, $2, $3)', [req.session.userId, score, date], function(error, results, fields) {
             //console.log(error);
             //console.log(results);
             if (!error) {
