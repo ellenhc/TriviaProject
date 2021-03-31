@@ -137,27 +137,20 @@ function renderGoodbye() {
     $goodbyeContainer.addClass("goodbye-div");
     $goodbyeContainer.html(`<p>Thanks for playing!</p>`);
 
-    const $playAgain = $(document.createElement("div"));
-    $playAgain.addClass("play-again");
-    $playAgain.html(`Play Again?`);
-    $goodbyeContainer.append($playAgain);
-
-    const $pastScores = $(document.createElement("button"));
-    $pastScores.addClass("play-again");
-    $pastScores.html("Score History")
-    $pastScores.click(() => {
-        $.get("/api/history", function(data) {
-            let $gameList = renderGames(data);
-            $goodbyeContainer.append($gameList);
-        })
-    })
-    $goodbyeContainer.append($pastScores);
+    const $showHistory = $(document.createElement("div"));
+    $showHistory.addClass("play-again");
+    $showHistory.html(`Show history?`);
+    $goodbyeContainer.append($showHistory)
 
     $node.append($goodbyeContainer);
 
     /*reloads page to go back to the original form when play again is clicked*/
-    $playAgain.click(() => {
-        location.reload();
+    $showHistory.click(() => {
+        //location.reload();
+        $.get("/api/history", function(data) {
+            let $gameList = renderGames(data);
+            $goodbyeContainer.append($gameList);
+        })
     })
 }
 
