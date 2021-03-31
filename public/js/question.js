@@ -174,7 +174,7 @@ function renderGames(data) {
     console.log(data);
     for (i = 0; i < data.length; i++) {
         let $li = $(document.createElement("li"));
-        $li.html(`${data[i]['score']} ${data[i]['date']}`);
+        $li.html(`Score: ${data[i]['score']} Date: ${data[i]['date']}`);
         console.log($li);
         $gameList.append($li);
     }
