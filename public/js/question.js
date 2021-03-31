@@ -142,6 +142,17 @@ function renderGoodbye() {
     $playAgain.html(`Play Again?`);
     $goodbyeContainer.append($playAgain);
 
+    const $pastScores = $(document.createElement("button"));
+    $pastScores.addClass("play-again");
+    $pastScores.html("Score History")
+    $pastScores.click(() => {
+        $.get("/api/history", function(data) {
+            let $gameList = renderGames(data);
+            $goodbyeContainer.append($gameList);
+        })
+    })
+    $goodbyeContainer.append($pastScores);
+
     $node.append($goodbyeContainer);
 
     /*reloads page to go back to the original form when play again is clicked*/
@@ -163,4 +174,16 @@ function renderStats($node) {
 
 function renderScore() {
     return `<p id="score">Score</p><h3>${score} / ${questionList.length}</h3>`;
+}
+
+function renderGames(data) {
+    const $gameList = $(document.createElement("ul"));
+    console.log(data);
+    for (i = 0; i < data.length; i++) {
+        let $li = $(document.createElement("li"));
+        $li.html(`${data[i]['score']} ${data[i]['date']}`);
+        console.log($li);
+        $gameList.append($li);
+    }
+    return $gameList;
 }

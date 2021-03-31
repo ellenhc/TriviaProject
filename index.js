@@ -41,6 +41,7 @@ app.post("/login", handleLogin);
 app.post("/register", handleRegister);
 app.post("/logout", handleLogout);
 app.post("/api/save", storeGame);
+app.get("/api/history", showHistory);
 app.get('/home', function(request, response) {
     if (request.session.loggedin) {
         response.send('Welcome back, ' + request.session.userName + '!');
@@ -128,10 +129,12 @@ function getUser(userName) {
         pool.query('SELECT * FROM users WHERE "userName"=$1', [userName], function(error, results, fields) {
             if (results.rows.length > 0) {
                 //console.log(results.rows);
-                //return results.rows;
-                fulfilled(results.rows)
+                //return result
+                fulfilled(results.rows);
             } else {
+                console.log(error);
                 console.log("Couldn't get user data.");
+                rejected(error);
             }
         });
     })
@@ -176,10 +179,40 @@ function storeGame(req, res) {
                 console.log("Saved game to database");
             } else {
                 res.status(500);
+                console.log(error);
                 console.log('Could not save game to database');
             }
             res.end();
         });
+    } else {
+        res.status(400);
+        res.end();
+    }
+}
+
+function getGames(userId) {
+    return new Promise(function(fulfilled, rejected) {
+        pool.query('SELECT * FROM games WHERE "userId"=$1', [userId], function(error, results, fields) {
+            if (results.rows.length > 0) {
+                //console.log(results.rows);
+                //return results.rows;
+                console.log("successfully grabbed games");
+                fulfilled(results.rows);
+            } else {
+                console.log("Couldn't get games.");
+                console.log(error);
+                rejected(error);
+            }
+        });
+    })
+}
+
+async function showHistory(req, res) {
+    let userId = req.session.userId;
+    if (userId) {
+        let userData = await getGames(userId);
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(userData));
     } else {
         res.status(400);
         res.end();
